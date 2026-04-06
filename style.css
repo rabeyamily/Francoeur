@@ -1,0 +1,541 @@
+/* ============================================================
+   FRANCOEUR — global styles
+   warm vintage · botanical · postage stamp
+   ============================================================ */
+
+:root {
+  --cream:    #f7f0e3;
+  --parchment:#ede4d0;
+  --kraft:    #d4b896;
+  --sienna:   #a0714a;
+  --umber:    #6b4226;
+  --ink:      #2e1f0f;
+  --sage:     #8a9e7e;
+  --rust:     #b85c38;
+  --ivory:    #faf6ee;
+
+  --font-display: 'DM Serif Display', 'Playfair Display', Georgia, serif;
+  --font-body:    'Cormorant Garamond', Georgia, serif;
+  --font-note:    'Caveat', cursive;
+
+  --radius-stamp: 6px;
+  --shadow-lift: 0 8px 32px rgba(46,31,15,0.18), 0 2px 8px rgba(46,31,15,0.10);
+  --shadow-subtle: 0 2px 12px rgba(46,31,15,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Grain texture ─────────────────────────────────── */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ── Typography ────────────────────────────────────── */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; }
+em { font-style: italic; }
+a { color: var(--sienna); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ────────────────────────────────────────── */
+.site-header {
+  text-align: center;
+  padding: 2rem 1rem 0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.logo-mark {
+  font-size: 1rem;
+  color: var(--sienna);
+  animation: spin-slow 12s linear infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  color: var(--umber);
+  letter-spacing: 0.04em;
+}
+
+.logo-sub {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--kraft);
+  margin-top: 0.15rem;
+}
+
+/* ── Main (intro + editor) ─────────────────────────── */
+#app { position: relative; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#main {
+  padding: 2rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: fadeUp 0.45s ease both;
+}
+
+/* Intro copy */
+.home-copy {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hero-heading {
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  line-height: 1.25;
+  color: var(--umber);
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: var(--sienna);
+  font-style: italic;
+}
+
+.editor-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* Preview column */
+.preview-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ── Flip card ─────────────────────────────────────── */
+.flip-scene {
+  width: min(340px, 90vw);
+  aspect-ratio: 3/2;
+  perspective: 1200px;
+}
+
+.flip-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+  cursor: pointer;
+}
+
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-stamp);
+  overflow: hidden;
+  box-shadow: var(--shadow-lift);
+}
+
+.flip-front {
+  background: var(--parchment);
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+  background: var(--ivory);
+}
+
+/* Stamp canvas */
+#stamp-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.canvas-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--parchment);
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.canvas-placeholder.hidden { opacity: 0; pointer-events: none; }
+
+.canvas-placeholder .upload-zone {
+  pointer-events: auto;
+}
+
+.upload-zone--preview {
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+}
+
+.upload-zone--preview .upload-icon {
+  font-size: 1.6rem;
+}
+
+.hero-photo-replace {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+
+.hero-photo-replace.is-visible {
+  display: flex;
+}
+
+.upload-replace-link {
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--sienna);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.upload-replace-link:hover {
+  color: var(--umber);
+}
+
+/* Note card back */
+.note-card {
+  width: 100%;
+  height: 100%;
+  padding: 1.25rem 1.25rem 0.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--ivory);
+  /* Subtle ruled paper lines via background */
+  background-image:
+    linear-gradient(var(--parchment) 1px, transparent 1px);
+  background-size: 100% 2rem;
+  background-position: 0 2rem;
+}
+
+.note-lines {
+  display: none; /* handled by bg */
+}
+
+.note-textarea {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-note);
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: var(--ink);
+  width: 100%;
+  caret-color: var(--sienna);
+}
+
+.note-textarea::placeholder {
+  color: var(--kraft);
+  font-style: italic;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--parchment);
+  z-index: 2;
+}
+
+.note-stamp-mini {
+  font-size: 1rem;
+  color: var(--sienna);
+  opacity: 0.5;
+}
+
+.note-char-count {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--kraft);
+  letter-spacing: 0.05em;
+}
+
+/* Flip toggle */
+.flip-toggle-row {
+  display: flex;
+  justify-content: center;
+}
+
+.flip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--kraft);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--sienna);
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: background 0.18s, border-color 0.18s;
+}
+.flip-btn:hover {
+  background: var(--parchment);
+  border-color: var(--sienna);
+}
+
+.flip-icon {
+  font-size: 1rem;
+  display: inline-block;
+  transition: transform 0.5s;
+}
+.flip-btn.active .flip-icon { transform: rotate(180deg); }
+
+/* ── Controls column ───────────────────────────────── */
+.controls-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ctrl-label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--sienna);
+}
+
+/* Upload zone */
+.upload-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: var(--parchment);
+  border: 1.5px dashed var(--kraft);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--sienna);
+  transition: background 0.18s, border-color 0.18s;
+}
+.upload-zone:hover {
+  background: #e8dcc8;
+  border-color: var(--sienna);
+}
+#img-upload { display: none; }
+
+.upload-icon {
+  font-size: 1.3rem;
+  color: var(--sienna);
+  opacity: 0.7;
+}
+
+/* Sliders */
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.slider-row input[type=range] {
+  flex: 1;
+  accent-color: var(--sienna);
+  height: 4px;
+}
+
+.slider-val {
+  min-width: 28px;
+  text-align: right;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--umber);
+}
+
+/* Color swatches */
+.color-swatches {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.swatch:hover { transform: scale(1.15); }
+
+.swatch.active {
+  border-color: var(--umber);
+  box-shadow: 0 0 0 2px var(--ivory), 0 0 0 4px var(--umber);
+}
+
+.swatch-custom {
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+}
+
+.swatch-custom input[type=color] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+/* Action buttons */
+.action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-dl {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: var(--umber);
+  color: var(--ivory);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s, opacity 0.2s;
+  min-width: 130px;
+}
+
+.btn-dl:hover:not(:disabled) {
+  background: var(--sienna);
+  transform: translateY(-1px);
+}
+
+.btn-dl:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-dl-back {
+  background: transparent;
+  border: 1px solid var(--umber);
+  color: var(--umber);
+}
+
+.btn-dl-back:hover:not(:disabled) {
+  background: var(--parchment);
+}
+
+/* ── Footer ─────────────────────────────────────────── */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem 2rem;
+  font-size: 0.8rem;
+  color: var(--kraft);
+  letter-spacing: 0.06em;
+  font-family: var(--font-body);
+}
+
+/* ── Responsive: tablet+ ────────────────────────────── */
+@media (min-width: 600px) {
+  .editor-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+
+  .preview-col {
+    flex: 0 0 auto;
+    width: 340px;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .controls-col {
+    flex: 1;
+  }
+
+  .flip-scene {
+    width: 340px;
+  }
+}
+
+/* ── Animations ─────────────────────────────────────── */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+.upload-zone.uploading .upload-text {
+  animation: pulse-soft 1s ease infinite;
+}

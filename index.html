@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Francoeur — stamp your memories</title>
+  <link rel="stylesheet" href="fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ░░ GRAIN OVERLAY ░░ -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ░░ HEADER ░░ -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-mark">✦</span>
+      <span class="logo-text">Francoeur</span>
+    </div>
+    <p class="logo-sub">stamp your memories</p>
+  </header>
+
+  <main id="app">
+    <section id="main">
+      <div class="home-copy">
+        <h2 class="hero-heading"> make your <br> own <em>postage stamp</em></h2>
+        <p class="hero-sub">Add a note on the back image.</p>
+        <div class="hero-photo-replace" id="photo-replace-wrap" aria-hidden="true">
+          <label class="upload-replace-link" for="img-upload">Choose different photo…</label>
+        </div>
+      </div>
+
+      <div class="editor-layout">
+
+        <!-- LEFT / TOP: Preview -->
+        <div class="preview-col">
+          <div class="flip-scene" id="flip-scene">
+            <div class="flip-card" id="flip-card">
+
+              <!-- FRONT: stamp -->
+              <div class="flip-face flip-front">
+                <canvas id="stamp-canvas"></canvas>
+                <input type="file" id="img-upload" accept="image/*" />
+                <div class="canvas-placeholder" id="canvas-placeholder">
+                  <label class="upload-zone upload-zone--preview" for="img-upload" id="upload-zone">
+                    <span class="upload-icon">⊕</span>
+                    <span class="upload-text" id="upload-text">tap to upload</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- BACK: note card -->
+              <div class="flip-face flip-back">
+                <div class="note-card">
+                  <div class="note-lines" aria-hidden="true">
+                    <div class="note-line"></div>
+                    <div class="note-line"></div>
+                    <div class="note-line"></div>
+                    <div class="note-line"></div>
+                    <div class="note-line"></div>
+                    <div class="note-line"></div>
+                  </div>
+                  <textarea
+                    id="note-text"
+                    class="note-textarea"
+                    placeholder="write something sweet…"
+                    maxlength="280"
+                    spellcheck="false"
+                  ></textarea>
+                  <div class="note-footer">
+                    <span class="note-stamp-mini" id="note-stamp-mini">✦</span>
+                    <span class="note-char-count"><span id="char-count">0</span>/280</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Flip toggle -->
+          <div class="flip-toggle-row">
+            <button class="flip-btn" id="flip-btn" title="flip stamp">
+              <span class="flip-icon">↺</span>
+              <span id="flip-label">see the back</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT / BOTTOM: Controls -->
+        <div class="controls-col">
+          <div class="control-group">
+            <label class="ctrl-label">Perforation size</label>
+            <div class="slider-row">
+              <input type="range" id="tooth" min="6" max="22" value="13" step="1" />
+              <span class="slider-val" id="tooth-out">13</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="ctrl-label">Border width</label>
+            <div class="slider-row">
+              <input type="range" id="border" min="10" max="60" value="28" step="1" />
+              <span class="slider-val" id="border-out">28</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="ctrl-label">Border color</label>
+            <div class="color-swatches" id="color-swatches">
+              <button class="swatch active" data-color="#f5e8c8" style="background:#f5e8c8;" title="Ivory"></button>
+              <button class="swatch" data-color="#ffffff" style="background:#ffffff;" title="White"></button>
+              <button class="swatch" data-color="#d4c4aa" style="background:#d4c4aa;" title="Kraft"></button>
+              <button class="swatch" data-color="#c8d8c0" style="background:#c8d8c0;" title="Sage"></button>
+              <button class="swatch" data-color="#c8c0d8" style="background:#c8c0d8;" title="Lavender"></button>
+              <button class="swatch" data-color="#d8c0c0" style="background:#d8c0c0;" title="Rose"></button>
+              <button class="swatch swatch-custom" title="Custom color">
+                <input type="color" id="border-color" value="#f5e8c8" />
+              </button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-dl" id="dl-front" disabled>
+              Download stamp
+            </button>
+            <button class="btn-dl btn-dl-back" id="dl-back" disabled>
+              Download note
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>made with ♡ · <a href="https://github.com/" target="_blank" id="gh-link">view on github</a></p>
+  </footer>
+
+  <script src="stamp.js"></script>
+  <script src="flip.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
