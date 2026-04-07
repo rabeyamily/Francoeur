@@ -163,7 +163,6 @@ a:hover { text-decoration: underline; }
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
-  cursor: pointer;
 }
 
 .flip-card.flipped {
@@ -203,7 +202,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--parchment);
+  background: transparent;
   pointer-events: none;
   transition: opacity 0.3s;
 }
@@ -214,11 +213,11 @@ a:hover { text-decoration: underline; }
 }
 
 .upload-zone--preview {
-  width: calc(100% - 2rem);
-  height: calc(100% - 2rem);
+  width: auto;
+  max-width: min(12rem, 78%);
   flex-direction: column;
   gap: 0.35rem;
-  padding: 1.25rem 1rem;
+  padding: 1rem 0.9rem;
   text-align: center;
 }
 
@@ -554,6 +553,112 @@ a:hover { text-decoration: underline; }
 
   .flip-scene {
     width: 340px;
+  }
+}
+
+/* Toast */
+.app-toast {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.app-toast[hidden] {
+  display: none !important;
+}
+
+.app-toast-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(46, 31, 15, 0.42);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.app-toast-panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 22rem;
+  padding: 1.5rem 1.4rem 1.2rem;
+  background: var(--ivory);
+  border: 1px solid var(--kraft);
+  border-radius: var(--radius-stamp);
+  box-shadow: var(--shadow-lift);
+  text-align: center;
+  animation: toastIn 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+}
+
+.app-toast-mark {
+  font-size: 1.1rem;
+  color: var(--sienna);
+  opacity: 0.55;
+  margin-bottom: 0.35rem;
+}
+
+.app-toast-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--umber);
+  margin-bottom: 0.65rem;
+  line-height: 1.25;
+}
+
+.app-toast-body {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 1.1rem;
+}
+
+.app-toast-body p {
+  margin: 0 0 0.65rem;
+}
+
+.app-toast-body p:last-child {
+  margin-bottom: 0;
+}
+
+.app-toast-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.6rem;
+  background: var(--umber);
+  color: var(--ivory);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s;
+}
+
+.app-toast-btn:hover {
+  background: var(--sienna);
+}
+
+.app-toast-btn:active {
+  transform: scale(0.98);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

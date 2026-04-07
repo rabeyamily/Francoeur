@@ -1,73 +1,47 @@
 # Francoeur ✦
 
-> *turn any photo into a postage stamp — add a note, download & share*
+Turn a photo into a perforated postage-stamp frame, add a note on the back, and download PNGs or a two-page PDF.
 
-**Francoeur** is a mobile-first web app that lets you frame photos with beautiful perforated postage stamp edges, write a handwritten-style note on the back, and download both as PNGs.
+## What it does
 
----
+- Upload on the stamp preview (drag-and-drop works there too)
+- Adjust perforation size, border width, and border colour
+- Flip with the **see the back** control only (the card itself doesn’t flip on tap)
+- Download **Stamp** (PNG), **Note** (PNG), or **PDF** (stamp + note). Note and PDF need at least one character of note text; otherwise you get an in-app message instead of a file.
+- Static site: HTML, CSS, and a few scripts—no build step
 
-## Features
+PDF export loads [jsPDF](https://github.com/parallax/jsPDF) from jsDelivr, so you need a network connection the first time that script is fetched.
 
-- 📸 Upload any photo → instant 3:2 stamp frame with perforated edges
-- ✍️ Flip the stamp to write a note on the back (Caveat handwriting font)
-- 🎨 Customise border color, perforation size, and border width
-- 💾 Download the stamp front and/or note back as PNG
-- 📱 Fully mobile-first, no frameworks, no build step
+## Run locally
 
----
-
-## Deploy to GitHub Pages
-
-1. Fork or clone this repo
-2. Go to **Settings → Pages**
-3. Set source to `main` branch, `/ (root)` folder
-4. Your app will be live at `https://<your-username>.github.io/<repo-name>`
-
-That's it — no npm, no build, no config.
-
----
-
-## Local development
-
-Just open `index.html` in a browser. For font loading to work correctly, serve it over HTTP:
+Opening `index.html` as a `file://` URL can break fonts. Serve the folder instead:
 
 ```bash
-# Python
-python -m http.server 8080
-
-# Node
-npx serve .
+python3 -m http.server 8080
+# or: npx serve .
 ```
 
----
+Then open `http://localhost:8080` (or the port your tool prints).
 
-## File structure
+## Deploy
 
-```
-francoeur/
-├── index.html     ← markup & page structure
-├── style.css      ← all styles (vintage, mobile-first)
-├── fonts.css      ← Google Fonts imports
-├── stamp.js       ← canvas rendering (front + back)
-├── flip.js        ← card flip animation controller
-├── app.js         ← main controller (navigation, events)
-└── README.md
-```
+**GitHub Pages:** Repo **Settings → Pages** → source **main**, folder **`/ (root)`**. The site will be at `https://<user>.github.io/<repo>/`.
 
----
+**Netlify:** Drag-and-drop the project folder at [netlify.com/drop](https://app.netlify.com/drop) if you want a URL without hooking up Git.
 
-## Customisation
+## Files
 
-To change the default border color palette, edit the `.swatch` buttons in `index.html`.
+| File        | Role |
+|------------|------|
+| `index.html` | Layout |
+| `style.css`  | Styles |
+| `fonts.css`  | Google Fonts `@import` |
+| `stamp.js`   | Canvas: stamp front + note card export |
+| `flip.js`    | Flip button |
+| `app.js`     | Controls, uploads, downloads, toast |
 
-To change the note font, swap `'Caveat'` in `stamp.js` and `fonts.css` for any Google Font with `font-display=swap`.
-
----
+Swatch colours live in `index.html`. Note typography follows Caveat + layout constants in `stamp.js`.
 
 ## Credits
 
-Built with vanilla HTML, CSS & Canvas API. Fonts via [Google Fonts](https://fonts.google.com).
-
----
-
-*Francoeur — free-hearted. A stamp is a little heart you send into the world.*
+Fonts: [Google Fonts](https://fonts.google.com). PDF: jsPDF. Everything else is plain browser APIs.

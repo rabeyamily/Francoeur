@@ -1,15 +1,13 @@
-/* app.js — main controller for Francoeur */
+/* app.js */
 
 (() => {
-  /* ── State ─────────────────────────────────────── */
   let loadedImage = null;
   let currentOpts = {
-    toothR:      13,
-    borderW:     28,
-    borderColor: '#f5e8c8',
+    toothR:      14,
+    borderW:     35,
+    borderColor: '#d4c4aa',
   };
 
-  /* ── Elements ──────────────────────────────────── */
   const imgUpload   = document.getElementById('img-upload');
   const uploadZone  = document.getElementById('upload-zone');
   const uploadText  = document.getElementById('upload-text');
@@ -27,11 +25,39 @@
   const dlPdf       = document.getElementById('dl-pdf');
   const noteText    = document.getElementById('note-text');
   const charCount   = document.getElementById('char-count');
+  const appToast    = document.getElementById('app-toast');
+  const appToastBody = document.getElementById('app-toast-body');
+  const appToastTitle = document.getElementById('app-toast-title');
+  const appToastClose = document.getElementById('app-toast-close');
+  const appToastBackdrop = appToast.querySelector('.app-toast-backdrop');
 
-  /* Don’t flip the card when opening the file picker from the front face */
+  function showAppToast(message, title = 'Almost there') {
+    appToastTitle.textContent = title;
+    appToastBody.innerHTML = '';
+    message.split(/\n\n/).forEach((para) => {
+      const p = document.createElement('p');
+      p.textContent = para.trim();
+      if (p.textContent) appToastBody.appendChild(p);
+    });
+    appToast.hidden = false;
+    document.body.style.overflow = 'hidden';
+    appToastClose.focus();
+  }
+
+  function hideAppToast() {
+    appToast.hidden = true;
+    appToastBody.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  appToastClose.addEventListener('click', hideAppToast);
+  appToastBackdrop.addEventListener('click', hideAppToast);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !appToast.hidden) hideAppToast();
+  });
+
   uploadZone.addEventListener('click', (e) => e.stopPropagation());
 
-  /* ── Image upload ──────────────────────────────── */
   imgUpload.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -62,7 +88,6 @@
     reader.readAsDataURL(file);
   });
 
-  /* Drag-and-drop */
   uploadZone.addEventListener('dragover', (e) => {
     e.preventDefault();
     uploadZone.style.background = '#e0d5c2';
@@ -82,7 +107,6 @@
     }
   });
 
-  /* ── Sliders ───────────────────────────────────── */
   toothSlider.addEventListener('input', () => {
     currentOpts.toothR = parseInt(toothSlider.value);
     toothOut.textContent = toothSlider.value;
@@ -95,19 +119,17 @@
     redraw();
   });
 
-  /* ── Color swatches ────────────────────────────── */
   swatches.forEach(sw => {
     sw.addEventListener('click', (e) => {
-      // If clicking the custom swatch, let color input open
       if (sw.classList.contains('swatch-custom')) return;
-      setColor(sw.dataset.color);
       setActiveSwatchEl(sw);
+      setColor(sw.dataset.color);
     });
   });
 
   borderColor.addEventListener('input', () => {
-    setColor(borderColor.value);
     setActiveSwatchEl(borderColor.closest('.swatch'));
+    setColor(borderColor.value);
   });
 
   function setColor(hex) {
@@ -120,21 +142,33 @@
     el.classList.add('active');
   }
 
-  /* ── Note text ─────────────────────────────────── */
   noteText.addEventListener('input', () => {
     charCount.textContent = noteText.value.length;
   });
 
-  /* ── Redraw ────────────────────────────────────── */
+  function syncOptsFromDom() {
+    currentOpts.toothR = parseInt(toothSlider.value, 10);
+    currentOpts.borderW = parseInt(borderSlider.value, 10);
+    const presetActive = document.querySelector('.swatch.active[data-color]');
+    currentOpts.borderColor = presetActive && presetActive.dataset.color
+      ? presetActive.dataset.color
+      : borderColor.value;
+  }
+
   function redraw() {
-    if (!loadedImage) return;
     StampRenderer.render(stampCanvas, loadedImage, currentOpts);
   }
 
-  /* ── Downloads ─────────────────────────────────── */
+  const EMPTY_NOTE_MSG =
+    "Your little note is still blank — we couldn’t bear to send an empty card!\n\n" +
+    "Flip to the back, scribble something (even one line counts), then try again. ✦";
+
+  function noteIsEmpty() {
+    return !noteText.value.trim();
+  }
+
   dlFront.addEventListener('click', () => {
     if (!loadedImage) return;
-    // Ensure latest render
     StampRenderer.render(stampCanvas, loadedImage, currentOpts);
     const link = document.createElement('a');
     link.download = 'francoeur-stamp.png';
@@ -142,11 +176,12 @@
     link.click();
   });
 
-  dlBack.addEventListener('click', () => {
-    const dataURL = StampRenderer.renderNote(noteText.value, {
-      toothR:      currentOpts.toothR,
-      borderColor: currentOpts.borderColor,
-    });
+  dlBack.addEventListener('click', async () => {
+    if (noteIsEmpty()) {
+      showAppToast(EMPTY_NOTE_MSG);
+      return;
+    }
+    const dataURL = await StampRenderer.renderNote(noteText.value);
     const link = document.createElement('a');
     link.download = 'francoeur-note.png';
     link.href = dataURL;
@@ -173,19 +208,23 @@
     doc.addImage(dataUrl, mime, x, y, w, h);
   }
 
-  dlPdf.addEventListener('click', () => {
+  dlPdf.addEventListener('click', async () => {
     if (!loadedImage) return;
     const jsPDF = window.jspdf && window.jspdf.jsPDF;
     if (!jsPDF) {
-      window.alert('PDF export could not load. Check your connection and try again.');
+      showAppToast(
+        'We couldn’t load the PDF helper. Check your connection and refresh the page, then try again.',
+        'Small snag',
+      );
+      return;
+    }
+    if (noteIsEmpty()) {
+      showAppToast(EMPTY_NOTE_MSG);
       return;
     }
     StampRenderer.render(stampCanvas, loadedImage, currentOpts);
     const stampPng = stampCanvas.toDataURL('image/png');
-    const notePng = StampRenderer.renderNote(noteText.value, {
-      toothR:      currentOpts.toothR,
-      borderColor: currentOpts.borderColor,
-    });
+    const notePng = await StampRenderer.renderNote(noteText.value);
 
     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
     fitImageOnPage(doc, stampPng, 'PNG');
@@ -194,6 +233,7 @@
     doc.save('francoeur-stamp-and-note.pdf');
   });
 
-  /* ── Init ──────────────────────────────────────── */
+  syncOptsFromDom();
+  redraw();
   FlipController.init();
 })();

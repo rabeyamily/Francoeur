@@ -25,7 +25,7 @@
     <section id="main">
       <div class="home-copy">
         <h2 class="hero-heading"> <em> make a postage stamp</em></h2>
-        <p class="hero-sub">Add a note on the back image.</p>
+        <p class="hero-sub">Add a note on the back</p>
         <div class="hero-photo-replace" id="photo-replace-wrap" aria-hidden="true">
           <label class="upload-replace-link" for="img-upload">Choose different photo…</label>
         </div>
@@ -92,30 +92,30 @@
           <div class="control-group">
             <label class="ctrl-label">Perforation size</label>
             <div class="slider-row">
-              <input type="range" id="tooth" min="6" max="22" value="13" step="1" />
-              <span class="slider-val" id="tooth-out">13</span>
+              <input type="range" id="tooth" min="6" max="22" value="14" step="1" />
+              <span class="slider-val" id="tooth-out">14</span>
             </div>
           </div>
 
           <div class="control-group">
             <label class="ctrl-label">Border width</label>
             <div class="slider-row">
-              <input type="range" id="border" min="10" max="60" value="28" step="1" />
-              <span class="slider-val" id="border-out">28</span>
+              <input type="range" id="border" min="10" max="60" value="35" step="1" />
+              <span class="slider-val" id="border-out">35</span>
             </div>
           </div>
 
           <div class="control-group">
             <label class="ctrl-label">Border color</label>
             <div class="color-swatches" id="color-swatches">
-              <button class="swatch active" data-color="#f5e8c8" style="background:#f5e8c8;" title="Ivory"></button>
+              <button class="swatch" data-color="#f5e8c8" style="background:#f5e8c8;" title="Ivory"></button>
               <button class="swatch" data-color="#ffffff" style="background:#ffffff;" title="White"></button>
-              <button class="swatch" data-color="#d4c4aa" style="background:#d4c4aa;" title="Kraft"></button>
+              <button class="swatch active" data-color="#d4c4aa" style="background:#d4c4aa;" title="Kraft"></button>
               <button class="swatch" data-color="#c8d8c0" style="background:#c8d8c0;" title="Sage"></button>
               <button class="swatch" data-color="#c8c0d8" style="background:#c8c0d8;" title="Lavender"></button>
               <button class="swatch" data-color="#d8c0c0" style="background:#d8c0c0;" title="Rose"></button>
               <button class="swatch swatch-custom" title="Custom color">
-                <input type="color" id="border-color" value="#f5e8c8" />
+                <input type="color" id="border-color" value="#d4c4aa" />
               </button>
             </div>
           </div>
@@ -139,6 +139,16 @@
   <footer class="site-footer">
     <p>made with ♡</p>
   </footer>
+
+  <div class="app-toast" id="app-toast" hidden role="dialog" aria-modal="true" aria-labelledby="app-toast-title">
+    <button type="button" class="app-toast-backdrop" tabindex="-1" aria-label="Close message"></button>
+    <div class="app-toast-panel">
+      <p class="app-toast-mark" aria-hidden="true">✦</p>
+      <h2 class="app-toast-title" id="app-toast-title">Almost there</h2>
+      <div class="app-toast-body" id="app-toast-body"></div>
+      <button type="button" class="app-toast-btn" id="app-toast-close">Got it</button>
+    </div>
+  </div>
 
   <script src="stamp.js"></script>
   <script src="flip.js"></script>

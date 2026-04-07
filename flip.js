@@ -1,4 +1,4 @@
-/* flip.js — card flip controller for Francoeur */
+/* flip.js */
 
 const FlipController = (() => {
   let isFlipped = false;
@@ -10,10 +10,6 @@ const FlipController = (() => {
     flipLabel = document.getElementById('flip-label');
 
     flipBtn.addEventListener('click', toggle);
-    flipCard.addEventListener('click', () => {
-      // clicking the card itself also flips
-      toggle();
-    });
   }
 
   function toggle() {
@@ -21,8 +17,6 @@ const FlipController = (() => {
     flipCard.classList.toggle('flipped', isFlipped);
     flipBtn.classList.toggle('active', isFlipped);
     flipLabel.textContent = isFlipped ? 'see the front' : 'see the back';
-
-    // Haptic on mobile
     if (navigator.vibrate) navigator.vibrate(12);
   }
 
