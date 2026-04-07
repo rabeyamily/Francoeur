@@ -24,6 +24,7 @@
   const borderColor = document.getElementById('border-color');
   const dlFront     = document.getElementById('dl-front');
   const dlBack      = document.getElementById('dl-back');
+  const dlPdf       = document.getElementById('dl-pdf');
   const noteText    = document.getElementById('note-text');
   const charCount   = document.getElementById('char-count');
 
@@ -53,6 +54,7 @@
         placeholder.classList.add('hidden');
         dlFront.disabled = false;
         dlBack.disabled  = false;
+        dlPdf.disabled   = false;
         redraw();
       };
       img.src = ev.target.result;
@@ -149,6 +151,47 @@
     link.download = 'francoeur-note.png';
     link.href = dataURL;
     link.click();
+  });
+
+  const IMG_W = 900;
+  const IMG_H = 600;
+
+  function fitImageOnPage(doc, dataUrl, mime) {
+    const pw = doc.internal.pageSize.getWidth();
+    const ph = doc.internal.pageSize.getHeight();
+    const margin = 12;
+    const maxW = pw - 2 * margin;
+    const maxH = ph - 2 * margin;
+    let w = maxW;
+    let h = w * (IMG_H / IMG_W);
+    if (h > maxH) {
+      h = maxH;
+      w = h * (IMG_W / IMG_H);
+    }
+    const x = (pw - w) / 2;
+    const y = (ph - h) / 2;
+    doc.addImage(dataUrl, mime, x, y, w, h);
+  }
+
+  dlPdf.addEventListener('click', () => {
+    if (!loadedImage) return;
+    const jsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!jsPDF) {
+      window.alert('PDF export could not load. Check your connection and try again.');
+      return;
+    }
+    StampRenderer.render(stampCanvas, loadedImage, currentOpts);
+    const stampPng = stampCanvas.toDataURL('image/png');
+    const notePng = StampRenderer.renderNote(noteText.value, {
+      toothR:      currentOpts.toothR,
+      borderColor: currentOpts.borderColor,
+    });
+
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    fitImageOnPage(doc, stampPng, 'PNG');
+    doc.addPage('a4', 'landscape');
+    fitImageOnPage(doc, notePng, 'PNG');
+    doc.save('francoeur-stamp-and-note.pdf');
   });
 
   /* ── Init ──────────────────────────────────────── */

@@ -91,7 +91,7 @@ a:hover { text-decoration: underline; }
   font-size: 0.8rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--kraft);
+  color: var(--sienna);
   margin-top: 0.15rem;
 }
 
@@ -350,12 +350,15 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  align-items: center;
 }
 
 .control-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  align-items: center;
+  width: 100%;
 }
 
 .ctrl-label {
@@ -364,6 +367,8 @@ a:hover { text-decoration: underline; }
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--sienna);
+  text-align: center;
+  width: 100%;
 }
 
 /* Upload zone */
@@ -398,11 +403,15 @@ a:hover { text-decoration: underline; }
 .slider-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .slider-row input[type=range] {
-  flex: 1;
+  flex: 0 1 auto;
+  width: 11rem;
+  max-width: min(11rem, 100%);
   accent-color: var(--sienna);
   height: 4px;
 }
@@ -421,6 +430,8 @@ a:hover { text-decoration: underline; }
   gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .swatch {
@@ -457,23 +468,29 @@ a:hover { text-decoration: underline; }
 /* Action buttons */
 .action-row {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .btn-dl {
-  flex: 1;
-  padding: 0.75rem 1rem;
+  flex: 0 1 auto;
+  padding: 0.45rem 0.95rem;
   background: var(--umber);
   color: var(--ivory);
   border: none;
-  border-radius: 8px;
+  border-radius: 100px;
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: background 0.18s, transform 0.15s, opacity 0.2s;
-  min-width: 130px;
+  white-space: nowrap;
+}
+
+.btn-dl-compact {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.75rem;
 }
 
 .btn-dl:hover:not(:disabled) {
@@ -496,6 +513,16 @@ a:hover { text-decoration: underline; }
   background: var(--parchment);
 }
 
+.btn-dl-pdf {
+  background: var(--sienna);
+  border: 1px solid var(--sienna);
+}
+
+.btn-dl-pdf:hover:not(:disabled) {
+  background: var(--rust);
+  border-color: var(--rust);
+}
+
 /* ── Footer ─────────────────────────────────────────── */
 .site-footer {
   text-align: center;
@@ -510,7 +537,7 @@ a:hover { text-decoration: underline; }
 @media (min-width: 600px) {
   .editor-layout {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     gap: 2.5rem;
   }
 

@@ -24,7 +24,7 @@
   <main id="app">
     <section id="main">
       <div class="home-copy">
-        <h2 class="hero-heading"> make your <br> own <em>postage stamp</em></h2>
+        <h2 class="hero-heading"> <em> make a postage stamp</em></h2>
         <p class="hero-sub">Add a note on the back image.</p>
         <div class="hero-photo-replace" id="photo-replace-wrap" aria-hidden="true">
           <label class="upload-replace-link" for="img-upload">Choose different photo…</label>
@@ -121,11 +121,14 @@
           </div>
 
           <div class="action-row">
-            <button class="btn-dl" id="dl-front" disabled>
-              Download stamp
+            <button type="button" class="btn-dl btn-dl-compact" id="dl-front" disabled title="Download stamp as PNG">
+              Stamp
             </button>
-            <button class="btn-dl btn-dl-back" id="dl-back" disabled>
-              Download note
+            <button type="button" class="btn-dl btn-dl-compact btn-dl-back" id="dl-back" disabled title="Download note as PNG">
+              Note
+            </button>
+            <button type="button" class="btn-dl btn-dl-compact btn-dl-pdf" id="dl-pdf" disabled title="Download stamp and note in one PDF">
+              PDF
             </button>
           </div>
         </div>
@@ -134,11 +137,12 @@
   </main>
 
   <footer class="site-footer">
-    <p>made with ♡ · <a href="https://github.com/" target="_blank" id="gh-link">view on github</a></p>
+    <p>made with ♡</p>
   </footer>
 
   <script src="stamp.js"></script>
   <script src="flip.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
